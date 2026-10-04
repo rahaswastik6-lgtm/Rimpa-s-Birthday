@@ -1,0 +1,81 @@
+--- a/css/style.css	2026-10-03 05:07:02.017578119 +0000
++++ b/css/style.css	2026-10-03 05:09:01.615745209 +0000
+@@ -327,3 +327,27 @@
+ @keyframes sfwSway{from{transform:rotate(calc(var(--r,0deg) - 4deg))}to{transform:rotate(calc(var(--r,0deg) + 4deg))}}
+ @keyframes sfwFall{0%{transform:translate3d(0,-24px,0) rotate(0);opacity:0}10%{opacity:.45}90%{opacity:.45}100%{transform:translate3d(var(--x),var(--H,700px),0) rotate(230deg);opacity:0}}
+ @media (prefers-reduced-motion:reduce){body[data-page="welcome"] .sfw .sfm{animation:none;transition:none}body[data-page="welcome"] .sfw .sfwp{display:none}}
++
++/* =====================================================================
++   SUNFLOWER THEME — phase 3B: memories page details. Decoration only, scoped to the memories page.
++   A tiny bloom beside the chapter label, a leaf sprig on each card corner, two small blooms + a few faint petals tucked behind the grid.
++   Cards, photos, tilt, hover and text are untouched. theme.sunflower:false removes every element added here.
++   ===================================================================== */
++body[data-page="memories"] .head>.hand{position:relative;width:fit-content;margin-inline:auto}   /* same look; lets the bloom hang off the label without shifting it */
++body[data-page="memories"] .sfm-lab{position:absolute;left:100%;top:50%;width:1.15em;height:1.13em;margin:-.58em 0 0 .3em;overflow:visible;pointer-events:none;
++  transform:rotate(var(--r,0deg));animation:sfmSway 8s ease-in-out infinite alternate}
++body[data-page="memories"] .grid{position:relative}
++body[data-page="memories"] .mem{position:relative}
++body[data-page="memories"] .sfm-cn{position:absolute;top:-13px;right:-11px;width:36px;height:auto;overflow:visible;pointer-events:none;opacity:.9}
++body[data-page="memories"] .mem:nth-child(even) .sfm-cn{right:auto;left:-11px;transform:scaleX(-1)}
++body[data-page="memories"] .sfmv{position:absolute;inset:0;z-index:-1;pointer-events:none}   /* behind the cards: blooms only peek out at the edges */
++body[data-page="memories"] .sfm-b{position:absolute;display:block;overflow:visible;height:auto;width:var(--s);opacity:.9;transform:rotate(var(--r,0deg)) scaleX(var(--f,1));animation:sfmSway 9s ease-in-out infinite alternate}
++body[data-page="memories"] .sfm-b1{--s:clamp(36px,6.5vw,52px);left:-12px;top:-26px}
++body[data-page="memories"] .sfm-b2{--s:clamp(30px,5.5vw,44px);right:-10px;bottom:-30px;animation-duration:11s}
++body[data-page="memories"] .sfmp{position:absolute;top:0;display:block;width:var(--s);height:calc(var(--s)*1.5);border-radius:55% 45% 60% 40%/70% 70% 30% 30%;
++  background:linear-gradient(160deg,var(--sf-yellow),var(--sf-gold));opacity:0;animation:sfmFall var(--t) linear var(--d) infinite}
++@keyframes sfmSway{from{transform:rotate(calc(var(--r,0deg) - 5deg)) scaleX(var(--f,1))}to{transform:rotate(calc(var(--r,0deg) + 5deg)) scaleX(var(--f,1))}}
++@keyframes sfmFall{0%{transform:translate3d(0,-20px,0) rotate(0);opacity:0}12%{opacity:.4}88%{opacity:.4}100%{transform:translate3d(var(--x),var(--H,700px),0) rotate(220deg);opacity:0}}
++@media (max-width:480px){body[data-page="memories"] .sfm-cn{width:32px;top:-11px;right:-2px}body[data-page="memories"] .mem:nth-child(even) .sfm-cn{left:-2px}
++  body[data-page="memories"] .sfm-b1{left:-8px}body[data-page="memories"] .sfm-b2{right:-6px}}
++@media (prefers-reduced-motion:reduce){body[data-page="memories"] .sfm-lab,body[data-page="memories"] .sfm-b{animation:none}body[data-page="memories"] .sfmp{display:none}}
+--- a/js/script.js	2026-10-03 05:07:02.017619523 +0000
++++ b/js/script.js	2026-10-03 05:09:51.515465022 +0000
+@@ -38,6 +38,11 @@
+     const tall = svg("0 0 120 260", stem("M60 100C57 150 66 205 60 260") + leaf(60, 205, 44, -148) + leaf(61, 172, 38, -32) + bloom(5, 0, 110, -8));
+     const posy = svg("0 0 120 150", stem("M60 85C58 105 62 125 60 150") + leaf(60, 130, 36, -150) + leaf(61, 116, 32, -32) + bloom(10, 0, 100, 6), "sfpo");
+     const sprig = svg("0 -10 110 90", stem("M4 74C34 70 62 52 90 22") + leaf(20, 71, 28, -60) + leaf(30, 68, 26, 25) + leaf(48, 58, 28, -62) + leaf(56, 52, 26, 22) + leaf(76, 35, 22, -70) + bloom(70, -6, 40, 10));
++    /* phase 3B builders: mini() = one small bloom (+ optional leaf), corner = a little leaf sprig for a card corner */
++    const mini = (cls, rot, flip, withLeaf) => `<svg class="${cls}" viewBox="0 0 110 108" style="--r:${rot}deg;--f:${flip}" aria-hidden="true" focusable="false">` +
++      (withLeaf ? `<use href="#sf-leaf" x="46" y="52" width="46" height="24.5" transform="rotate(38 46 64)"/>` : "") + `<use href="#sf-bloom" width="100" height="100"/></svg>`;
++    const corner = svg("0 0 48 54", stem("M44 4C34 10 22 22 10 40").replace('stroke-width="4.5"', 'stroke-width="2.2"') +
++      leaf(36, 10, 15, 90) + leaf(28, 17.5, 15, 190) + leaf(19, 27.6, 14, 75) + leaf(10, 40, 13, 122), "sfm-cn");
+     const defs = () => {                                   // one shared bloom + leaf, injected once into <body>
+       if (document.getElementById("sf-bloom")) return;
+       let p = "", d = "";
+@@ -112,6 +117,23 @@
+         if (!on || reduced) return; let h = "";
+         for (let k = 0; k < 14; k++) h += `<i class="sfpet" style="--l:${r(25, 75).toFixed(0)}%;--t:${r(35, 70).toFixed(0)}%;--x:${r(-70, 70).toFixed(0)}px;--y:${(-r(110, 260)).toFixed(0)}px;--r:${r(-200, 200).toFixed(0)}deg;--d:${r(1.8, 3).toFixed(1)}s;--w:${r(0, 2).toFixed(1)}s"></i>`;
+         host.insertAdjacentHTML("beforeend", h);
++      },
++      /* phase 3B · memories page: a tiny bloom by "chapter one", a leaf sprig on each card corner, two small blooms + a few faint
++         petals tucked behind the grid. All aria-hidden, no pointer events, no layout impact. Returns "" when theme.sunflower is false. */
++      memLabel: () => { if (!on) return ""; defs(); return mini("sfm-lab", 8, 1, false); },
++      memCorner: () => { if (!on) return ""; defs(); return corner; },
++      memLayer: () => {
++        if (!on) return ""; defs();
++        let p = "";
++        if (!reduced && !(C.theme && C.theme.backgroundPetals === false)) [[8, 8, 36, 0], [27, 7, 42, 12], [58, 9, 38, 6], [80, 7, 44, 20], [94, 8, 34, 3]].forEach(([l, s, t, d]) =>
++          p += `<i class="sfmp" style="left:${l}%;--s:${s}px;--t:${t}s;--d:${-d}s;--x:${(l > 50 ? -1 : 1) * (10 + d % 9)}px"></i>`);
++        return `<div class="sfmv" aria-hidden="true">${mini("sfm-b sfm-b1", -14, -1, true)}${mini("sfm-b sfm-b2", 18, 1, true)}${p}</div>`;
++      },
++      memFit(grid) {                                       // petals fall exactly as far as the grid is tall (kept in sync as photos load)
++        const lay = grid && grid.querySelector(".sfmv"); if (!lay) return;
++        const set = () => lay.style.setProperty("--H", grid.offsetHeight + "px");
++        set(); addEventListener("resize", set); addEventListener("load", set);
++        if (window.ResizeObserver) new ResizeObserver(set).observe(grid);
+       }
+     };
+   })();
+@@ -299,9 +321,10 @@
+ 
+     memories() {
+       const m = C.memories, tilt = [-3, 2, -1.5, 3, -2, 1.5];
+-      app.innerHTML = `<header class="head center"><p class="hand">${m.label}</p><h1>${m.title}</h1><p class="sub">${m.subtitle}</p></header>
++      app.innerHTML = `<header class="head center"><p class="hand">${m.label}${SFX.memLabel()}</p><h1>${m.title}</h1><p class="sub">${m.subtitle}</p></header>
+         <div class="grid">${m.items.map((it, n) => `<article class="mem" style="--r:${tilt[n % 6]}deg">
+-          ${photo(it.photo, it.title)}<p class="hand date">${it.date}</p><h2>${it.title}</h2><p>${it.caption}</p></article>`).join("")}</div>${next("Continue →")}`;
++          ${SFX.memCorner()}${photo(it.photo, it.title)}<p class="hand date">${it.date}</p><h2>${it.title}</h2><p>${it.caption}</p></article>`).join("")}${SFX.memLayer()}</div>${next("Continue →")}`;
++      SFX.memFit(app.querySelector(".grid"));
+     },
+ 
+     letter() {

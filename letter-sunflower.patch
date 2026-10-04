@@ -1,0 +1,78 @@
+--- a/css/style.css
++++ b/css/style.css
+@@ -354,4 +354,23 @@
+ /* SUNFLOWER THEME — phase 3C: gallery polish. Stacking only.
+    The leaf sprig on each card corner is tucked BEHIND the photo, so no decoration can paint over an image. */
+ body[data-page="memories"] .sfm-cn{z-index:0}
+-body[data-page="memories"] .mem .polaroid{position:relative;z-index:1}
+\ No newline at end of file
++body[data-page="memories"] .mem .polaroid{position:relative;z-index:1}
++/* =====================================================================
++   SUNFLOWER THEME — phase 4: personal letter details. Decoration only, scoped to the letter page.
++   A faint line-art watermark, one small sunflower in the top-right corner, a few resting petals (all in one layer BEHIND the text,
++   clipped to the paper) + a tiny divider in the blank line above the signature. Text, ruled paper, tilt, word-fade, button: untouched.
++   Nothing here is in the text flow (absolute / out-of-flow), so wrapping and paper size cannot change. theme.sunflower:false removes every element.
++   ===================================================================== */
++@keyframes sfLnIn{from{opacity:0}}
++body[data-page="letter"] .paper{position:relative}   /* it already is a containing block (transform) — stated so the layer is anchored to the paper */
++body[data-page="letter"] .sfl-deco{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none;border-radius:inherit;animation:sfLnIn 1.6s ease .5s both}
++body[data-page="letter"] .sfl-wm{position:absolute;right:-12%;top:52%;width:min(80%,330px);height:auto;aspect-ratio:1;transform:translateY(-50%) rotate(-10deg);opacity:.2}
++body[data-page="letter"] .sfl-wm .pe{fill:rgba(244,197,66,.2);stroke:#E8AA22;stroke-width:1.1}
++body[data-page="letter"] .sfl-wm .in{fill:none;stroke:#F4C542;stroke-width:.8}
++body[data-page="letter"] .sfl-wm .dc{fill:rgba(194,138,69,.3);stroke:#7a5128;stroke-width:1.2}
++body[data-page="letter"] .sfl-wm .sd{fill:#c28a45}
++body[data-page="letter"] .sfl-cn{position:absolute;top:8px;right:8px;width:clamp(46px,11vw,64px);height:auto;overflow:visible;rotate:6deg;transform-origin:50% 100%;opacity:.92;animation:sfSwayP 9s ease-in-out infinite}
++body[data-page="letter"] .sfl-pt{position:absolute;width:7px;height:11px;border-radius:100% 0;background:linear-gradient(160deg,var(--sf-soft),var(--sf-gold));opacity:.5;rotate:var(--r,0deg)}
++body[data-page="letter"] .paper .sign{position:relative}   /* anchor for the divider; no visual change */
++body[data-page="letter"] .sfl-dv{position:absolute;left:50%;top:-29px;width:132px;height:20px;margin-left:-66px;overflow:visible;pointer-events:none;animation:sfLnIn 1.6s ease 1s both}   /* centred in the one blank line above the signature */
++@media (prefers-reduced-motion:reduce){body[data-page="letter"] .sfl-cn{animation:none}}
+--- a/js/script.js
++++ b/js/script.js
+@@ -53,6 +53,23 @@
+         `<symbol id="sf-bloom" viewBox="0 0 100 100">${p}<circle cx="50" cy="50" r="16" fill="url(#sfDisc)"/>${d}</symbol>` +
+         `<symbol id="sf-leaf" viewBox="0 0 30 16"><path d="M0 8C8 0 22 0 30 8 22 16 8 16 0 8Z" fill="#788A4A"/><path d="M2 8H28" stroke="#52643A" stroke-width=".8" opacity=".6"/></symbol></svg>`);
+     };
++    /* phase 4 builders (letter page): lnWm = faint line-art watermark, lnCn = one small corner sunflower, lnDv = tiny divider, lnPt = resting petals */
++    const lnWm = (() => {
++      let p = "", d = "";
++      for (let k = 0; k < 18; k++) p += `<ellipse cx="100" cy="40" rx="8" ry="31" transform="rotate(${k * 20} 100 100)"/>`;
++      for (let k = 0; k < 18; k++) p += `<ellipse class="in" cx="100" cy="48" rx="6" ry="22" transform="rotate(${k * 20 + 10} 100 100)"/>`;
++      for (let k = 1; k < 64; k++) { const a = k * 137.508 * Math.PI / 180, q = 3.3 * Math.sqrt(k); d += `<circle cx="${(100 + Math.cos(a) * q).toFixed(1)}" cy="${(100 + Math.sin(a) * q).toFixed(1)}" r="1"/>`; }
++      return svg("0 0 200 200", `<g class="pe">${p}</g><circle class="dc" cx="100" cy="100" r="28"/><g class="sd">${d}</g>`, "sfl-wm");
++    })();
++    const lnCn = svg("0 0 72 84", stem("M45 42C45 56 40 70 31 82").replace('stroke-width="4.5"', 'stroke-width="1.8"') + leaf(40, 67, 20, -150) + leaf(43.7, 54.5, 16, -22) + bloom(22, 0, 46, -8), "sfl-cn");
++    const lnDv = (() => {
++      let p = "";
++      for (let k = 0; k < 10; k++) p += `<ellipse cx="66" cy="5.5" rx="2.2" ry="4.5" transform="rotate(${k * 36} 66 10)"/>`;
++      return svg("0 0 132 20", `<path d="M8 10H34M98 10H124" fill="none" stroke="#788A4A" stroke-width="1" stroke-linecap="round" opacity=".7"/>` +
++        `<g fill="#788A4A" opacity=".85"><path d="M55 10C50 5 43 5.5 38 10 43 14.5 50 15 55 10Z"/><path d="M77 10C82 5 89 5.5 94 10 89 14.5 82 15 77 10Z"/><circle cx="5" cy="10" r="1.3"/><circle cx="127" cy="10" r="1.3"/></g>` +
++        `<g fill="#F4C542" stroke="#E8AA22" stroke-width=".4">${p}</g><circle cx="66" cy="10" r="3" fill="#7a5128"/>`, "sfl-dv");
++    })();
++    const lnPt = ["right:6px;top:21%;--r:35deg", "left:7px;top:41%;--r:-28deg", "right:9px;bottom:33%;--r:-52deg", "left:18%;bottom:6px;--r:20deg"].map(s => `<i class="sfl-pt" style="${s}"></i>`).join("");
+     const drift = () => {                                  // a few slow petals over the curtains (reuses phase-1 sfDrift / sfSway)
+       if (reduced) return ""; let h = "";
+       for (let k = 0; k < 9; k++) {
+@@ -134,7 +151,11 @@
+         const set = () => lay.style.setProperty("--H", grid.offsetHeight + "px");
+         set(); addEventListener("resize", set); addEventListener("load", set);
+         if (window.ResizeObserver) new ResizeObserver(set).observe(grid);
+-      }
++      },
++      /* phase 4 · letter page: a decoration layer BEHIND the paper text (watermark, corner sunflower, a few petals) + a tiny divider
++         that sits in the blank line above the signature. All absolutely positioned, aria-hidden, clipped to the paper. "" when theme.sunflower is false. */
++      letterDeco: () => { if (!on) return ""; defs(); return `<div class="sfl-deco" aria-hidden="true">${lnWm}${lnCn}${lnPt}</div>`; },
++      letterRule: () => on ? lnDv : ""
+     };
+   })();
+ 
+@@ -333,8 +354,8 @@
+       let n = 0;
+       const words = t => t.split(" ").map(w => `<span class="w" style="animation-delay:${(n++ * step).toFixed(2)}s">${w}</span>`).join(" ");
+       app.innerHTML = `<header class="head center"><p class="hand">${l.label}</p><h1>${l.title}</h1></header>
+-        <article class="paper"><p>Hey ${C.herName},</p>${l.paragraphs.map(p => `<p>${words(p)}</p>`).join("")}
+-        <p class="sign">— ${C.yourName}</p></article><p class="hand more center">${l.next}</p>${next(l.button)}`;
++        <article class="paper">${SFX.letterDeco()}<p>Hey ${C.herName},</p>${l.paragraphs.map(p => `<p>${words(p)}</p>`).join("")}
++        <p class="sign">${SFX.letterRule()}— ${C.yourName}</p></article><p class="hand more center">${l.next}</p>${next(l.button)}`;
+     },
+ 
+     final() {

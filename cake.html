@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One last surprise ✨</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Inter:wght@400;500&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* cake.css — styles for cake.html only (colours/fonts come from style.css) */
+html,body{overflow-x:hidden}
+/* =====================================================================
+   ★ CAKE SURPRISE (cake.html) — added after the final page
+   ===================================================================== */
+.cakepg{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;--u:min(17px,3.6vw,2.5vh)}
+.msgs{min-height:7.8rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;max-width:34rem}
+.msgs>*{opacity:0;transform:translateY(8px);transition:opacity .6s,transform .6s}
+.msgs>.on{opacity:.92;transform:none}.msgs>.big.on{opacity:1}
+.msgs .big{font-family:var(--serif);font-size:clamp(1.6rem,5.5vw,2.5rem);color:var(--burg);line-height:1.2}
+.msgs .big.glow{text-shadow:0 0 18px rgba(255,200,130,.95)}
+.msgs small{opacity:.7}
+.cst{position:relative;font-size:var(--u);width:26em;max-width:100%;height:17.5em;margin-top:.6em;transition:transform 1.8s ease}
+.cst::before{content:"";position:absolute;left:50%;bottom:-2em;width:min(32em,100vw);height:24em;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(255,196,120,.5),transparent);opacity:0;transition:opacity 1.4s;pointer-events:none}
+.cst.glow::before,.cst.lit::before{opacity:1}.cst.dim::before{opacity:.22}.cst.zm{transform:scale(1.07)}
+/* gift box */
+.gbox{position:absolute;left:50%;bottom:0;width:15em;height:11em;margin-left:-7.5em;cursor:pointer;z-index:2;animation:bob 3.2s ease-in-out infinite;transition:opacity .9s,transform .9s;-webkit-tap-highlight-color:transparent}
+@keyframes bob{50%{transform:translateY(-.5em)}}
+.gbox.shake{animation:shk .5s}
+@keyframes shk{20%{transform:rotate(-3deg)}40%{transform:rotate(3deg)}60%{transform:rotate(-2deg)}80%{transform:rotate(2deg)}}
+.gbox .bx,.gbox .lid{position:absolute;left:0;right:0;background:linear-gradient(#f7ccd5,#e6a3b1);box-shadow:0 1.2em 2em -1em rgba(122,46,63,.5),inset 0 -.5em 1em rgba(122,46,63,.12)}
+.gbox .bx{bottom:0;height:7.6em;border-radius:.4em .4em .8em .8em}
+.gbox .lid{left:-.7em;right:-.7em;top:.9em;height:3.4em;border-radius:.6em;background:linear-gradient(#fbdde3,#eeb1be);transform-origin:0 100%;transition:transform 1s cubic-bezier(.3,.9,.3,1),opacity .6s .3s;z-index:2}
+.gbox .rb{position:absolute;left:50%;width:2.4em;margin-left:-1.2em;top:0;bottom:0;background:linear-gradient(90deg,#8d3548,#a8475b,#8d3548)}
+.bow{position:absolute;left:50%;top:-1.5em;width:4.6em;height:2.2em;margin-left:-2.3em}
+.bow::before,.bow::after{content:"";position:absolute;top:0;width:2.2em;height:2em;border:.45em solid #a8475b;border-radius:50%}
+.bow::before{left:0;transform:rotate(-18deg)}.bow::after{right:0;transform:rotate(18deg)}
+.gbox .tag{position:absolute;left:50%;bottom:1em;transform:translateX(-50%) rotate(-3deg);background:var(--cream);padding:.3em .9em;border-radius:.3em;z-index:3;white-space:nowrap;box-shadow:0 .3em .8em rgba(0,0,0,.15);transition:opacity .5s}
+.gbox .tag b{display:block;font:500 1.15em var(--serif);color:var(--burg)}.gbox .tag span{font-family:var(--hand);font-size:1.1em;color:var(--burg)}
+.gbox.open .lid{transform:translate(-1.6em,-3.6em) rotate(-34deg);opacity:0}.gbox.open .tag{opacity:0}
+.cst.sides .gbox{opacity:0;transform:translateY(1.4em) scale(1.14);animation:none;pointer-events:none}
+/* cake */
+.cake{position:absolute;left:50%;bottom:0;width:24em;height:16em;margin-left:-12em;z-index:1;opacity:0;transform:translateY(5em) scale(.45);transform-origin:50% 100%;transition:transform 1.5s cubic-bezier(.2,.9,.25,1),opacity .5s;pointer-events:none;
+  --lay:radial-gradient(circle at 1em 1.1em,#f6cdd5 0 .78em,transparent .82em) 0 0/2em 2em repeat-x,linear-gradient(180deg,#f6cdd5 0 1.1em,#f1dcaa 1.1em 2.4em,#fff7ea 2.4em 3.1em,#f1dcaa 3.1em 4.6em,#fff7ea 4.6em 5.2em,#f1dcaa 5.2em)}
+.cst.rise .cake{opacity:1;transform:none;pointer-events:auto}
+.plate{position:absolute;left:0;bottom:0;width:24em;height:3.2em;border-radius:50%;background:radial-gradient(#fff,#f1e4ea 70%,#e3cdd6);box-shadow:0 .8em 1.4em -.6em rgba(122,46,63,.45)}
+.tier{position:absolute}.tier.b{left:2em;bottom:1.4em;width:20em;height:6em}.tier.t{left:5.5em;bottom:6.6em;width:13em;height:4.8em}
+.main,.slice,.cutface,.tm{position:absolute;top:0;bottom:0;background:var(--lay)}
+.main::before,.slice::before,.tm::before{content:"";position:absolute;left:0;right:0;background:#fbe1e7;top:-.9em;height:1.8em}
+.main{left:0;width:14em;border-radius:.2em 0 0 10em/.2em 0 0 .9em;box-shadow:inset 1.4em 0 1.2em -1em rgba(255,255,255,.45)}.main::before{border-radius:10em 0 0 10em/.9em 0 0 .9em}
+.cutface{left:14em;width:6em;filter:brightness(.93);box-shadow:inset .6em 0 .8em rgba(122,46,63,.22)}
+.slice{left:14em;width:6em;border-radius:0 0 6em 0/0 0 .9em 0;box-shadow:inset -1.2em 0 1.2em -1em rgba(122,46,63,.2);transform-origin:0 100%}.slice::before{border-radius:0 6em 6em 0/0 .9em .9em 0}
+.cake.cut .slice{animation:sl 1.2s cubic-bezier(.2,.8,.25,1) forwards}
+@keyframes sl{35%{transform:translate(.5em,-.5em) rotate(1deg)}to{transform:translate(2.5em,.35em) rotate(9deg)}}
+.cst.rise .cake.cut{transform:translateX(-1.6em)}   /* nudge the cake left so the slice stays on screen */
+.tm{left:0;right:0;border-radius:.2em .2em 6.5em 6.5em/.2em .2em .9em .9em;box-shadow:inset 1.2em 0 1.1em -1em rgba(255,255,255,.45),inset -1.2em 0 1.1em -1em rgba(122,46,63,.2)}.tm::before{top:-1.1em;height:2.2em;border-radius:50%}
+.num{position:absolute;left:50%;top:1.15em;transform:translateX(-50%);font:italic 2em/1 var(--serif);letter-spacing:.08em;color:#a8475b;text-shadow:0 1px 0 #fff;z-index:2}
+.cds{position:absolute;left:1.2em;right:1.2em;top:0}
+.cd{display:block;position:absolute;width:.5em;height:2em;margin-left:-.25em;border-radius:.15em;background:repeating-linear-gradient(135deg,var(--c) 0 .2em,#fff 0 .4em)}
+.cd.r0{top:-2.7em}.cd.r1{top:-1.9em}
+.fl{display:block;position:absolute;left:50%;bottom:100%;width:.7em;height:1.1em;margin-left:-.35em;transform-origin:50% 100%;transform:rotate(calc(var(--bend,0)*42deg)) scaleY(calc(1 + var(--bend,0)*.25));text-decoration:none;pointer-events:none}
+.fl i{display:block;width:100%;height:100%;border-radius:50%/65% 65% 38% 38%;background:radial-gradient(ellipse at 50% 75%,#fff6c8 0 22%,#ffc761 55%,#ff8a3d);box-shadow:0 0 .9em .35em rgba(255,176,80,.5);scale:0;transform-origin:50% 100%;transition:scale .5s cubic-bezier(.3,1.6,.5,1);animation:fk .22s ease-in-out infinite alternate}
+@keyframes fk{from{transform:scaleY(1) rotate(-3deg)}to{transform:scaleY(1.14) scaleX(.92) rotate(3deg)}}
+.cake.blowing .fl i{animation-duration:.07s}
+.cd.lit .fl i{scale:1}.cd.out .fl i{scale:0;transition:scale .3s}
+.cd.out{animation:none;z-index:auto}   /* style.css has a global .out (sparkle) class — keep it from fading the candle sticks + their smoke */
+.sm{position:absolute;left:50%;bottom:100%;width:1em;height:1em;margin-left:-.5em;border-radius:50%;background:radial-gradient(rgba(110,90,100,.4),transparent 70%);animation:smk 2.4s ease-out forwards;pointer-events:none}
+@keyframes smk{to{transform:translate(var(--x,.5em),-4.5em) scale(2.6);opacity:0}}
+/* knife + cutting zone */
+.zone{position:absolute;left:16em;bottom:1.4em;width:3.4em;height:6em;margin-left:-1.7em;z-index:5;touch-action:none;cursor:grab;display:none;outline:0}
+.zone.on{display:block}
+.zone::before{content:"";position:absolute;left:50%;top:-1.2em;bottom:0;border-left:.14em dashed rgba(122,46,63,.55)}
+.cl{position:absolute;left:50%;top:0;width:.16em;margin-left:-.08em;height:0;background:rgba(90,35,55,.75);box-shadow:0 0 .3em rgba(90,35,55,.4)}
+.knife{position:absolute;left:50%;top:-5.2em;width:2.6em;height:5.2em;margin-left:-1.3em;filter:drop-shadow(0 .4em .4em rgba(0,0,0,.25));pointer-events:auto;cursor:grab;animation:kh 1s ease-in-out infinite alternate}
+@keyframes kh{to{transform:rotate(6deg)}}
+.crumb{position:absolute;width:.4em;height:.4em;border-radius:50%;background:#e8c58a;pointer-events:none;animation:cr .9s ease-out forwards}
+@keyframes cr{to{transform:translate(var(--dx),var(--dy));opacity:0}}
+.sp{position:absolute;bottom:3em;color:#ffd98a;text-shadow:0 0 .5em #ffbf5a;pointer-events:none;animation:rs 1.8s ease-out forwards}
+@keyframes rs{to{transform:translate(var(--dx),-10em);opacity:0}}
+.cf{position:fixed;top:-20px;z-index:3;width:8px;height:12px;border-radius:2px;opacity:.85;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translate(var(--dx),110vh) rotate(540deg)}}
+.cact{min-height:3.6rem;margin-top:.8em;display:flex;gap:10px;justify-content:center;align-items:center}
+.btn.ghost{background:rgba(255,255,255,.75);color:var(--burg);box-shadow:none}.nudge{animation:nd 1s ease-in-out infinite}
+@keyframes nd{50%{transform:scale(1.07)}}
+</style>
+</head>
+<body data-page="cake">
+<div id="sky" aria-hidden="true"></div>
+<main id="app"></main>
+<script src="js/config.js"></script>
+<script>
+/* cake.js — the cake surprise page. Self-contained: only needs js/config.js (for editable text) + css/style.css + css/cake.css. */
+(() => {
+  const C = typeof CONFIG !== "undefined" ? CONFIG : { herName: "Rimpa" };   // works even if config.js is missing
+  // fallback text, used only if config.js has no `cake` block — the real, editable text lives in config.js
+  C.cake = Object.assign({
+    page: "cake.html",
+    entryButton: "Wait... one last thing 👀",
+    introTitle: "One last surprise...",
+    introMessage: "Okay... this one is actually fun 😂",
+    boxLabel: "For {her} ✨",
+    boxNote: "okay... this is actually the last one 😂",
+    openButton: "Open it",
+    candles: 18,
+    wishLine: "Okay, birthday girl...",
+    wishTitle: "Make a wish ✨",
+    blowInstruction: "Take a breath... and blow 🎂",
+    blowHere: "Blow at the candles ↓",
+    micNote: "(your mic only listens for the blow — nothing is recorded)",
+    micFallback: "Mic not cooperating? Tap the button below 👇",
+    manualBlowButton: "Tap to blow instead",
+    afterBlow: "Wish made ✨",
+    blownTitle: "Happy 18th, {her} 🥳🎂",
+    cutTitle: "Now comes the important part 😂",
+    cutButton: "Cut the cake 🎂",
+    cutHint: "Drag the knife down the dotted line (or just tap it)",
+    cutDone: "Finally 😂",
+    cutDone2: "Now someone has to eat it...",
+    cutJoke: "Unfortunately, the website cannot deliver cake. 😭😂",
+    finalTitle: "Happy 18th, {her} 🥳🎂✨",
+    finalMessage: "Hope this little website made you smile.",
+    finalFunny: "Okay, NOW we're actually done. 😂"
+  }, C.cake);
+  const app = document.getElementById("app");
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const esc = s => String(s).replace(/[&<>\"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  /* ---------- music state + page transitions (same behaviour as script.js) ---------- */
+  const audio = C.music ? new Audio(C.music) : null;
+  const go = file => {
+    if (audio) sessionStorage.setItem("music", JSON.stringify({ on: !audio.paused, t: audio.currentTime }));
+    
+    document.body.classList.add("leaving");
+    setTimeout(() => (location.href = file), 450);
+  };
+  document.addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b) go(b.dataset.go); });
+
+  /* ---------- the cake ---------- */
+  const views = {
+        /* ★ CAKE — box opens → candles light → blow (mic or button) → knife cut → celebration. All text from C.cake */
+    cake() {
+      const K = C.cake, $ = id => document.getElementById(id), wait = ms => new Promise(r => setTimeout(r, ms));
+      const f = s => esc(s).replaceAll("{her}", esc(C.herName)), rnd = (a, b) => a + Math.random() * (b - a);
+      const N = K.candles || 18, back = Math.ceil(N / 2), cols = ["#f8c8d4", "#d9cfeb", "#fbe3d3", "#fff"];
+      const cds = Array.from({ length: N }, (_, n) => {
+        const r = n < back ? 0 : 1, cnt = r ? N - back : back, k = r ? n - back : n;
+        return `<b class="cd r${r}" style="left:${cnt > 1 ? 3 + k * 94 / (cnt - 1) : 50}%;--c:${cols[n % 4]}"><u class="fl"><i></i></u></b>`;
+      }).join("");
+      app.innerHTML = `<section class="cakepg">
+        <div class="msgs" role="status" aria-live="polite"><p id="m1" class="hand"></p><h1 id="m2" class="big"></h1><p id="m3"></p></div>
+        <div class="cst" id="cst">
+          <div class="gbox" id="gbox" role="button" tabindex="0" aria-label="${esc(K.openButton)}">
+            <div class="bx"><i class="rb"></i></div><div class="lid"><i class="rb"></i><i class="bow"></i></div>
+            <div class="tag"><b>${f(K.boxLabel)}</b><span>${f(K.boxNote)}</span></div></div>
+          <div class="cake" id="cake"><i class="plate"></i>
+            <div class="tier b"><div class="main"></div><div class="cutface"></div><div class="slice"></div><span class="num">18</span></div>
+            <div class="tier t"><div class="tm"></div><div class="cds">${cds}</div></div>
+            <div class="zone" id="zone" tabindex="0" aria-label="${esc(K.cutButton)}"><i class="cl"></i>
+              <svg class="knife" viewBox="0 0 26 52" aria-hidden="true"><path d="M9 0h8v17H9z" fill="#7a2e3f"/><path d="M6 17h14l-7 35z" fill="#eef1f5" stroke="#9aa3ad"/></svg></div>
+          </div></div>
+        <div class="cact"><button class="btn" id="ob">${esc(K.openButton)}</button><button class="btn ghost" id="fb" hidden>${esc(K.manualBlowButton)}</button></div></section>`;
+      const [st, cake, gb, zone, fb] = ["cst", "cake", "gbox", "zone", "fb"].map($), cs = [...cake.querySelectorAll(".cd")];
+      const say = (a, b, c) => [["m1", a], ["m2", b], ["m3", c]].forEach(([id, t]) => {
+        if (t === undefined) return; const el = $(id); el.classList.remove("on"); void el.offsetWidth; el.innerHTML = t; if (t) el.classList.add("on"); });
+      const bend = v => cake.style.setProperty("--bend", v.toFixed(2));
+      say("", f(K.introTitle), f(K.introMessage));
+
+      /* ----- 1. open the box ----- */
+      let opened = false;
+      const open = async () => {
+        if (opened) return; opened = true; $("ob").hidden = true; say("", "", "");
+        gb.classList.add("shake"); await wait(500);
+        gb.classList.remove("shake"); gb.classList.add("open"); await wait(500);                // ribbon + lid
+        st.classList.add("glow", "zm"); st.classList.add("rise");                                // warm light, cake rises out
+        if (!reduced) for (let k = 0; k < 22; k++) { const s = document.createElement("span"); s.className = "sp"; s.textContent = ["✦", "✧", "·"][k % 3];
+          s.style.cssText = `left:${35 + Math.random() * 30}%;--dx:${rnd(-70, 70)}px;animation-delay:${rnd(0, .8)}s`; st.appendChild(s); setTimeout(() => s.remove(), 2800); }
+        await wait(900); st.classList.add("sides"); await wait(900);                           // box sides fall away
+        light();
+      };
+      gb.onclick = $("ob").onclick = open;
+      gb.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } };
+
+      /* ----- 2. light the candles one by one ----- */
+      const light = async () => {
+        for (const c of cs) { c.classList.add("lit"); await wait(130); }
+        st.classList.add("lit"); say(f(K.wishLine), f(K.wishTitle), ""); await wait(2600);
+        say("", f(K.blowInstruction), `${f(K.blowHere)}<br><small>${f(K.micNote)}</small>`);
+        fb.hidden = false; startMic(); setTimeout(() => { if (!blown) { fb.classList.add("nudge"); say(undefined, undefined, f(K.micFallback)); } }, 9000);
+      };
+
+      /* ----- 3. blow: microphone (local only, never recorded) + button fallback ----- */
+      let mic = null, blown = false;
+      const stopMic = () => { if (!mic) return; cancelAnimationFrame(mic.raf); try { mic.s.getTracks().forEach(t => t.stop()); mic.x.close(); } catch (_) {} mic = null; };
+      const startMic = async () => {
+        try {
+          const s = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+          if (blown) return s.getTracks().forEach(t => t.stop());
+          const x = new (window.AudioContext || window.webkitAudioContext)(), an = x.createAnalyser(), buf = new Float32Array(1024);
+          an.fftSize = 1024; x.createMediaStreamSource(s).connect(an); x.resume();
+          mic = { s, x, raf: 0 }; let base = 0.01, n = 0, held = 0, sm = 0, last = performance.now();
+          const loop = t => {
+            if (!mic || blown) return;
+            try {
+              an.getFloatTimeDomainData(buf); let sum = 0; for (let k = 0; k < buf.length; k++) sum += buf[k] * buf[k];
+              const rms = Math.sqrt(sum / buf.length), dt = t - last; last = t;
+              if (n < 25) { base = Math.min(.04, base * .8 + rms * .2); n++; }               // learn the room's noise first (~0.4s)
+              const thr = Math.max(.05, base * 3);
+              sm += (Math.min(1, Math.max(0, (rms - base) / (thr * 2))) - sm) * .3; if (n >= 25) bend(sm);   // flames lean while she blows
+              held = n >= 25 && rms > thr ? held + dt : Math.max(0, held - dt * 2);
+              if (held > 450) return blow();                                                // sustained airflow = blown
+            } catch (_) { return stopMic(); }
+            mic.raf = requestAnimationFrame(loop);
+          };
+          mic.raf = requestAnimationFrame(loop);
+          document.addEventListener("pointerdown", () => mic && mic.x.resume());            // iOS: wake audio on first touch
+        } catch (_) { say(undefined, undefined, f(K.micFallback)); fb.classList.add("nudge"); }   // denied / unsupported → button still works
+      };
+      fb.onpointerdown = () => !blown && bend(1); fb.onpointerup = fb.onpointerleave = () => !blown && bend(0); fb.onclick = () => blow();
+
+      const smoke = c => { const s = document.createElement("s"); s.className = "sm"; s.style.setProperty("--x", rnd(-.8, .8) + "em"); c.appendChild(s); setTimeout(() => s.remove(), 2500); };
+      const blow = async () => {
+        if (blown) return; blown = true; stopMic(); fb.hidden = true; fb.classList.remove("nudge");   // mic is released immediately
+        cake.classList.add("blowing"); bend(1); say("", "", "");
+        for (const c of cs) { await wait(140); c.classList.add("out"); if (!reduced) smoke(c); }
+        await wait(500); cake.classList.remove("blowing"); bend(0); st.classList.remove("glow"); st.classList.add("dim");
+        say(f(K.afterBlow), f(K.blownTitle), ""); $("m2").classList.add("glow"); await wait(3000);
+        cut();
+      };
+
+      /* ----- 4. cut the cake: drag the knife (mouse/touch) or tap the dotted line ----- */
+      const cut = () => {
+        $("m2").classList.remove("glow"); say(f(K.cutTitle), f(K.cutButton), f(K.cutHint));
+        const cl = zone.querySelector(".cl"), kn = zone.querySelector(".knife"); zone.classList.add("on");
+        let p = 0, drag = false, moved = 0, y0 = 0, done = false, lastC = 0;
+        const crumbs = (n, big) => { if (reduced) return; const h = zone.offsetHeight;
+          for (let k = 0; k < n; k++) { const c = document.createElement("i"); c.className = "crumb";
+            c.style.cssText = `left:${zone.offsetLeft + zone.offsetWidth / 2}px;top:${zone.offsetTop + (big ? rnd(0, h) : p * h)}px;--dx:${rnd(-1, 1) * (big ? 70 : 28)}px;--dy:${rnd(big ? -50 : 0, 60)}px`;
+            cake.appendChild(c); setTimeout(() => c.remove(), 1000); } };
+        const set = v => {
+          if (done) return; p = Math.max(p, Math.min(1, v)); cl.style.height = p * 100 + "%";
+          kn.style.translate = `0 ${p * zone.offsetHeight}px`;
+          if (Date.now() - lastC > 90) { lastC = Date.now(); crumbs(1); }
+          if (p >= .96) finish();
+        };
+        const finish = async () => {
+          done = true; zone.classList.remove("on"); crumbs(20, true); cake.classList.add("cut"); say("", "", "");
+          await wait(1300); say("", f(K.cutDone), `${f(K.cutDone2)}<br>${f(K.cutJoke)}`); await wait(3600); celebrate();
+        };
+        zone.onpointerdown = e => { drag = true; moved = 0; y0 = e.clientY; zone.setPointerCapture(e.pointerId); };
+        zone.onpointermove = e => { if (!drag) return; moved = Math.max(moved, Math.abs(e.clientY - y0)); const r = zone.getBoundingClientRect(); set((e.clientY - r.top) / r.height); };
+        zone.onpointerup = zone.onpointercancel = () => { if (drag && moved < 8) set(p + .34); drag = false; };   // a plain tap also advances the cut
+        zone.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); set(p + .34); } };
+      };
+
+      /* ----- 5. final celebration (soft, not a huge explosion) ----- */
+      const celebrate = async () => {
+        say("", f(K.finalTitle), f(K.finalMessage)); burst(24);
+        if (!reduced) { const col = ["#e8b8c0", "#d9cfeb", "#fbe3d3", "#ffd98a", "#7a2e3f"];
+          for (let k = 0; k < 38; k++) setTimeout(() => { const c = document.createElement("i"); c.className = "cf"; c.style.cssText =
+            `left:${rnd(0, 100)}%;background:${col[k % 5]};--dx:${rnd(-60, 60)}px;animation-duration:${rnd(5, 9)}s`; document.body.appendChild(c); setTimeout(() => c.remove(), 9500); }, k * 160); }
+        await wait(2800); $("m3").innerHTML += `<br><span class="hand">${f(K.finalFunny)}</span>`;
+      };
+    }
+
+  };
+
+  /* ---------- floating stars, music button, back button, cursor sparkles ---------- */
+  const sky = document.getElementById("sky");
+  /* ---------- SUNFLOWER THEME: drifting petals, tiny flowers, golden dust (switch in config.js → theme) ---------- */
+  const T = Object.assign({ sunflower: true, backgroundPetals: true }, C.theme);
+  function burst(n) {
+    if (reduced) return;
+    if (!T.sunflower) return stars(n);                    // theme off → the original stars, exactly as before
+    if (!T.backgroundPetals) return;
+    if (!document.getElementById("sf-flower")) {          // one shared SVG flower, reused everywhere via <use href="#sf-flower">
+      const ell = (a, cy, ry, v) => `<ellipse cx="20" cy="${cy}" rx="3.3" ry="${ry}" transform="rotate(${a} 20 20)" style="fill:var(${v})"/>`;
+      let p = "";
+      for (let k = 0; k < 14; k++) p += ell(k * 360 / 14, 9, 8, "--sf-p2,#E8AA22");
+      for (let k = 0; k < 14; k++) p += ell(k * 360 / 14 + 360 / 28, 10.5, 6.5, "--sf-p1,#F4C542");
+      sky.insertAdjacentHTML("afterbegin", `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="sf-flower" viewBox="0 0 40 40">${p}<circle cx="20" cy="20" r="6" style="fill:var(--sf-c,#7a5128)"/><circle cx="20" cy="20" r="3.2" style="fill:var(--sf-c2,#c28a45);opacity:.55"/></symbol></svg>`);
+    }
+    const r = (a, b) => a + Math.random() * (b - a);
+    /* responsive pass: phones/tablets get fewer, smaller items; each item is placed so that it, its sway and its drift stay inside the viewport */
+    const W = document.documentElement.clientWidth || innerWidth, phone = W <= 480;
+    n = Math.max(4, Math.round(n * (phone ? .6 : W <= 820 ? .75 : 1)));
+    for (let k = 0; k < n; k++) {
+      const kind = k % 9 === 0 ? "fl" : k % 9 === 4 ? "sil" : k % 3 === 1 ? "pt" : "dot";   // flower · green silhouette · petal · gold dust
+      const s = (kind === "fl" ? r(24, 34) : kind === "sil" ? r(12, 18) : kind === "pt" ? r(7, 11) : r(3, 6)) * (phone ? .8 : 1);
+      const o = { fl: .42, sil: .24, pt: .5, dot: .6 }[kind];
+      const el = document.createElement("i");
+      const lx = 12 + r(0, Math.max(1, W - s - 24)), dx = Math.max(10 - lx, Math.min(W - s - 10 - lx, r(-50, 50)));   // 12px safe margin: left + drift + sway all stay on screen
+      el.className = "sf-item"; el.setAttribute("aria-hidden", "true");
+      el.style.cssText = `left:${(lx / W * 100).toFixed(2)}%;--s:${s.toFixed(1)}px;--o:${o};--t:${r(32, 56).toFixed(1)}s;--w:${r(6, 11).toFixed(1)}s;--wd:${(-r(0, 10)).toFixed(1)}s;--x:${dx.toFixed(0)}px;--r:${r(-25, 25).toFixed(0)}deg;animation-delay:${(-r(0, 50)).toFixed(1)}s`;
+      el.innerHTML = kind === "fl" || kind === "sil"
+        ? `<b class="sf-in ${kind}"><svg class="sf-flower" aria-hidden="true" focusable="false"><use href="#sf-flower"/></svg></b>`
+        : `<b class="sf-in ${kind}"></b>`;
+      sky.appendChild(el);
+    }
+  }
+  function stars(n) {                                     // the ORIGINAL star/heart decoration, kept as the theme-off fallback
+    if (reduced) return;
+    for (let k = 0; k < n; k++) {
+      const s = document.createElement("span");
+      s.textContent = ["✦", "✧", "·", "✦", "✧", "·", "♡"][k % 7];
+      s.style.cssText = `left:${Math.random() * 100}%;font-size:${10 + Math.random() * 16}px;` +
+        `animation-duration:${12 + Math.random() * 14}s;animation-delay:${-Math.random() * 14}s;--x:${Math.random() * 80 - 40}px`;
+      sky.appendChild(s);
+    }
+  }
+  window.mountMusic = () => {
+    if (!audio || audio.error || document.querySelector(".music")) return;   // audio.error = music file is missing
+    audio.loop = true;
+    const btn = document.createElement("button");
+    btn.className = "music"; btn.setAttribute("aria-label", "Toggle music"); btn.setAttribute("aria-pressed", "false"); btn.textContent = "♪";
+    const sync = () => { btn.classList.toggle("on", !audio.paused); btn.setAttribute("aria-pressed", String(!audio.paused)); };
+    btn.onclick = () => { audio.paused ? audio.play().catch(() => {}) : audio.pause(); };
+    audio.addEventListener("play", sync); audio.addEventListener("pause", sync);
+    audio.addEventListener("error", () => btn.remove());   // no music file → hide button
+    document.body.appendChild(btn);
+    try {                                                   // resume from the previous page if she had it on
+      const s = JSON.parse(sessionStorage.getItem("music") || "null");
+      if (s) { audio.currentTime = s.t || 0; if (s.on) audio.play().catch(() => {}); }
+    } catch (_) {}
+  };
+  mountMusic();
+  app.insertAdjacentHTML("beforebegin", `<button class="backbtn" data-go="final.html">← back</button>`);
+  if (matchMedia("(pointer: fine)").matches && !reduced) {
+    let last = 0;
+    document.addEventListener("mousemove", e => {
+      if (Date.now() - last < 70) return; last = Date.now();
+      const s = document.createElement("span");
+      s.className = "spark"; s.textContent = "✦"; s.style.left = e.clientX + "px"; s.style.top = e.clientY + "px";
+      document.body.appendChild(s); setTimeout(() => s.remove(), 800);
+    });
+  }
+
+  if (sessionStorage.getItem("arrive")) { document.body.classList.add("arrive"); sessionStorage.removeItem("arrive"); }
+  document.body.classList.toggle("sfbox", T.sunflower !== false);   // sunflower box theme (CSS) follows theme.sunflower in config.js
+  try { views.cake(); burst(8); }
+  catch (e) { console.error(e); app.innerHTML = `<p style="padding:48px 12px;text-align:center">Something went wrong on this page: ${esc(e.message)}</p>`; }   // never a silent blank page
+})();
+</script>
+</body>
+</html>

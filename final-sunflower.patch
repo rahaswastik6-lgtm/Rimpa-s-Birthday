@@ -1,0 +1,98 @@
+--- a/css/style.css
++++ b/css/style.css
+@@ -354,4 +354,30 @@
+ /* SUNFLOWER THEME — phase 3C: gallery polish. Stacking only.
+    The leaf sprig on each card corner is tucked BEHIND the photo, so no decoration can paint over an image. */
+ body[data-page="memories"] .sfm-cn{z-index:0}
+-body[data-page="memories"] .mem .polaroid{position:relative;z-index:1}
+\ No newline at end of file
++body[data-page="memories"] .mem .polaroid{position:relative;z-index:1}
++/* =====================================================================
++   SUNFLOWER THEME — phase 5: final page details. Decoration only, scoped to the final page.
++   One sunflower on the card's top-right corner, a small bloom beside the photo, a soft warm glow behind the ✨, a few petals drifting down
++   the side padding and a tiny signature in the bottom padding. Heading, message, photo, footer, button, tilt and heartbeat are untouched.
++   Everything is absolute inside ONE layer (last child of the card, behind the content) → nothing can move. theme.sunflower:false removes it all.
++   ===================================================================== */
++@keyframes sffIn{from{opacity:0}}
++@keyframes sffGlow{from{opacity:.65}to{opacity:1}}
++@keyframes sffSway{from{transform:rotate(calc(var(--r,0deg) - 5deg)) scaleX(var(--f,1))}to{transform:rotate(calc(var(--r,0deg) + 5deg)) scaleX(var(--f,1))}}
++@keyframes sffFall{0%{transform:translate3d(0,0,0) rotate(0);opacity:0}12%{opacity:.4}88%{opacity:.4}100%{transform:translate3d(var(--x),calc(var(--H,700px) - 14px),0) rotate(220deg);opacity:0}}   /* starts and ends inside the card */
++body[data-page="final"] .card{position:relative;isolation:isolate}   /* anchor + stacking scope for the layer (backdrop-filter already made it one) */
++body[data-page="final"] .sff{--pd:clamp(22px,5vw,40px);position:absolute;inset:0;margin:0;z-index:-1;pointer-events:none;animation:sffIn 1.6s ease .6s both}   /* --pd = the card's own padding */
++body[data-page="final"] .sff-clip{position:absolute;inset:0;overflow:hidden;border-radius:inherit}   /* glow + petals stay inside the rounded card; sunflowers may hang off its edge */
++body[data-page="final"] .sff-glow{position:absolute;left:50%;top:calc(var(--pd) + 40px);width:210px;height:210px;margin:-105px 0 0 -105px;border-radius:50%;   /* centred on the ✨ (5rem tall) */
++  background:radial-gradient(closest-side,rgba(255,205,100,.34),rgba(244,197,66,.1) 58%,transparent);animation:sffGlow 7s ease-in-out infinite alternate}
++body[data-page="final"] .sffp{position:absolute;top:0;display:block;width:var(--s);height:calc(var(--s)*1.5);border-radius:55% 45% 60% 40%/70% 70% 30% 30%;
++  background:linear-gradient(160deg,var(--sf-yellow),var(--sf-gold));opacity:0;animation:sffFall var(--t) linear var(--d) infinite}
++body[data-page="final"] .sffp.l{left:calc(var(--pd)*.5 - var(--s)*.5)}      /* centred in the left / right padding strip: text and photo never sit there */
++body[data-page="final"] .sffp.r{right:calc(var(--pd)*.5 - var(--s)*.5)}
++body[data-page="final"] .sff-a{position:absolute;top:-16px;right:-12px;width:clamp(50px,8vw,68px);height:auto;overflow:visible;rotate:7deg;transform-origin:50% 100%;opacity:.95;animation:sfSwayP 9s ease-in-out infinite}
++body[data-page="final"] .sff-m{position:absolute;display:block;overflow:visible;width:0;height:auto;opacity:0;transform:rotate(var(--r,0deg)) scaleX(var(--f,1));transition:opacity .4s;animation:sffSway 9s ease-in-out infinite alternate}   /* left/top/width are set from the photo's measured position */
++body[data-page="final"] .sff-m.on{opacity:.9}
++body[data-page="final"] .sff-dv{position:absolute;left:50%;bottom:calc(var(--pd)*.5 - 7px);width:88px;height:auto;margin-left:-44px;overflow:visible;opacity:.9}   /* inside the bottom padding, below the footer */
++@media (max-width:480px){body[data-page="final"] .sff-a{right:-5px}}
++@media (max-width:340px){body[data-page="final"] .sffp{display:none}}   /* the side strip is too narrow for petals here (the photo fills the card) */
++@media (prefers-reduced-motion:reduce){body[data-page="final"] .sff-a,body[data-page="final"] .sff-m,body[data-page="final"] .sff-glow{animation:none}body[data-page="final"] .sffp{display:none}}
+--- a/js/script.js
++++ b/js/script.js
+@@ -43,6 +43,15 @@
+       (withLeaf ? `<use href="#sf-leaf" x="46" y="52" width="46" height="24.5" transform="rotate(38 46 64)"/>` : "") + `<use href="#sf-bloom" width="100" height="100"/></svg>`;
+     const corner = svg("0 0 48 54", stem("M44 4C34 10 22 22 10 40").replace('stroke-width="4.5"', 'stroke-width="2.2"') +
+       leaf(36, 10, 15, 90) + leaf(28, 17.5, 15, 190) + leaf(19, 27.6, 14, 75) + leaf(10, 40, 13, 122), "sfm-cn");
++    /* phase 5 builders (final page): fnCn = the corner sunflower, fnDv = a tiny leaf-and-bloom signature for the foot of the card */
++    const fnCn = svg("0 0 72 84", stem("M45 42C45 56 40 70 31 82").replace('stroke-width="4.5"', 'stroke-width="1.8"') + leaf(40, 67, 20, -150) + leaf(43.7, 54.5, 16, -22) + bloom(22, 0, 46, -8), "sff-a");
++    const fnDv = (() => {
++      let p = "";
++      for (let k = 0; k < 10; k++) p += `<ellipse cx="50" cy="4.6" rx="1.8" ry="3.7" transform="rotate(${k * 36} 50 8)"/>`;
++      return svg("0 0 100 16", `<path d="M7 8H25M75 8H93" fill="none" stroke="#788A4A" stroke-width="1" stroke-linecap="round" opacity=".7"/>` +
++        `<g fill="#788A4A" opacity=".85"><path d="M42 8C38 4 31 4.5 27 8 31 11.5 38 12 42 8Z"/><path d="M58 8C62 4 69 4.5 73 8 69 11.5 62 12 58 8Z"/><circle cx="4" cy="8" r="1.2"/><circle cx="96" cy="8" r="1.2"/></g>` +
++        `<g fill="#F4C542" stroke="#E8AA22" stroke-width=".35">${p}</g><circle cx="50" cy="8" r="2.5" fill="#7a5128"/>`, "sff-dv");
++    })();
+     const defs = () => {                                   // one shared bloom + leaf, injected once into <body>
+       if (document.getElementById("sf-bloom")) return;
+       let p = "", d = "";
+@@ -134,6 +143,34 @@
+         const set = () => lay.style.setProperty("--H", grid.offsetHeight + "px");
+         set(); addEventListener("resize", set); addEventListener("load", set);
+         if (window.ResizeObserver) new ResizeObserver(set).observe(grid);
++      },
++      /* phase 5 · final page: one sunflower on the card's top-right corner, one small bloom in the gutter beside the photo, a warm glow behind the ✨,
++         a few petals drifting down the card's SIDE PADDING only (never across text or the photo) and a tiny signature in the bottom padding.
++         One aria-hidden layer appended as the card's LAST child, all absolutely positioned → no layout impact. "" when theme.sunflower is false. */
++      finalDeco: () => {
++        if (!on) return ""; defs();
++        let p = "";
++        if (!reduced && !(C.theme && C.theme.backgroundPetals === false)) [["l", 6, 36, 0], ["r", 7, 44, 14], ["l", 7, 50, 26], ["r", 6, 38, 7]].forEach(([side, s, t, d]) =>
++          p += `<i class="sffp ${side}" style="--s:${s}px;--t:${t}s;--d:${-d}s;--x:${(side === "r" ? -1 : 1) * (2 + d % 3)}px"></i>`);
++        return `<div class="sff" aria-hidden="true"><div class="sff-clip"><i class="sff-glow"></i>${p}</div>${fnCn}${mini("sff-m", -10, -1, true)}${fnDv}</div>`;
++      },
++      finalFit(card) {                                     // places the small bloom in the free gutter beside the photo (no room → no flower)
++        const lay = card && card.querySelector(".sff"); if (!lay) return;
++        const fig = card.querySelector(".polaroid"), m = lay.querySelector(".sff-m");
++        const place = () => {
++          const R = card.getBoundingClientRect(); lay.style.setProperty("--H", R.height + "px");   // petals fall exactly as far as the card is tall
++          if (!fig || !m) return;
++          const P = fig.getBoundingClientRect(), gutter = P.left - R.left - 10;                      // photo's real edge (tilt included) minus 10px of air
++          const s = Math.min(Math.min(56, Math.max(40, P.width * .2)), gutter / .78);                // a fifth of its width hangs off the card edge
++          if (s < 26) return void m.classList.remove("on");
++          m.style.cssText += `;left:${(-s * .22).toFixed(1)}px;top:${(P.top - R.top + P.height * .56 - s / 2).toFixed(1)}px;width:${s.toFixed(1)}px`;
++          m.classList.add("on");
++        };
++        place();
++        const again = () => requestAnimationFrame(place);
++        addEventListener("resize", again); addEventListener("load", again);
++        if (document.fonts && document.fonts.ready) document.fonts.ready.then(again);
++        if (window.ResizeObserver) new ResizeObserver(again).observe(card);
+       }
+     };
+   })();
+@@ -341,7 +378,8 @@
+       const f = C.final;
+       app.innerHTML = `<section class="card center"><div class="heart" aria-hidden="true">✨</div><h1>${f.heading}</h1>
+         <p class="sub">${f.sub}</p><p class="msg">${f.message}</p>${photo(f.photo, "A final photo", "tilt")}
+-        <p class="hand foot">${f.footer}</p></section>`;
++        <p class="hand foot">${f.footer}</p>${SFX.finalDeco()}</section>`;
++      SFX.finalFit(app.querySelector(".card"));
+       setTimeout(() => burst(26), 3000);                // stars appear after a few seconds
+     }
+   };

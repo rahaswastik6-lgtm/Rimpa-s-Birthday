@@ -1,0 +1,92 @@
+--- a/css/style.css	2026-10-03 05:58:52.881665718 +0000
++++ b/css/style.css	2026-10-03 05:58:52.931960137 +0000
+@@ -95,7 +95,7 @@
+ .top{grid-area:top;text-align:center}
+ .top .hand{font-size:clamp(1.3rem,4vw,1.6rem)}
+ .top h1{font-size:clamp(2.1rem,7vw,3.2rem);margin:2px 0 6px}
+-.top h1::after{content:"✦";font-size:.3em;vertical-align:super;margin-left:.4em;color:var(--pink)}
++.top h1::after{content:"✦";font-size:.3em;vertical-align:super;margin-left:.4em;color:var(--sf-gold)}
+ .top .lead{font-size:clamp(1rem,3vw,1.2rem)}
+ .stage{grid-area:stage;padding:clamp(60px,13vw,86px) 4% 0}
+ .float{animation:fl 7s ease-in-out infinite}
+@@ -323,7 +323,7 @@
+ body[data-page="welcome"] .sfw .sfm{position:absolute;display:block;overflow:visible;width:0;height:0;opacity:0;transition:opacity .9s ease .5s;transform:rotate(var(--r,0deg));animation:sfwSway 9s ease-in-out infinite alternate}
+ body[data-page="welcome"] .sfw .sfm.on{opacity:.92}
+ body[data-page="welcome"] .sfw .sfm-p.on{opacity:.85}
+-body[data-page="welcome"] .sfw .sfwp{position:absolute;top:0;display:block;width:var(--s);height:calc(var(--s)*1.5);border-radius:55% 45% 60% 40%/70% 70% 30% 30%;background:linear-gradient(160deg,var(--sf-yellow),var(--sf-gold));opacity:0;animation:sfwFall var(--t) linear var(--d) infinite}
++body[data-page="welcome"] .sfw .sfwp{position:absolute;top:0;display:block;width:var(--s);height:calc(var(--s)*1.6);border-radius:100% 0;background:linear-gradient(160deg,var(--sf-soft),var(--sf-gold));opacity:0;animation:sfwFall var(--t) linear var(--d) infinite}
+ @keyframes sfwSway{from{transform:rotate(calc(var(--r,0deg) - 4deg))}to{transform:rotate(calc(var(--r,0deg) + 4deg))}}
+ @keyframes sfwFall{0%{transform:translate3d(0,-24px,0) rotate(0);opacity:0}10%{opacity:.45}90%{opacity:.45}100%{transform:translate3d(var(--x),var(--H,700px),0) rotate(230deg);opacity:0}}
+ @media (prefers-reduced-motion:reduce){body[data-page="welcome"] .sfw .sfm{animation:none;transition:none}body[data-page="welcome"] .sfw .sfwp{display:none}}
+@@ -344,8 +344,8 @@
+ body[data-page="memories"] .sfm-b{position:absolute;display:block;overflow:visible;height:auto;width:var(--s);opacity:.9;transform:rotate(var(--r,0deg)) scaleX(var(--f,1));animation:sfmSway 9s ease-in-out infinite alternate}
+ body[data-page="memories"] .sfm-b1{--s:clamp(36px,6.5vw,52px);left:-12px;top:-26px}
+ body[data-page="memories"] .sfm-b2{--s:clamp(30px,5.5vw,44px);right:-10px;bottom:-30px;animation-duration:11s}
+-body[data-page="memories"] .sfmp{position:absolute;top:0;display:block;width:var(--s);height:calc(var(--s)*1.5);border-radius:55% 45% 60% 40%/70% 70% 30% 30%;
+-  background:linear-gradient(160deg,var(--sf-yellow),var(--sf-gold));opacity:0;animation:sfmFall var(--t) linear var(--d) infinite}
++body[data-page="memories"] .sfmp{position:absolute;top:0;display:block;width:var(--s);height:calc(var(--s)*1.6);border-radius:100% 0;
++  background:linear-gradient(160deg,var(--sf-soft),var(--sf-gold));opacity:0;animation:sfmFall var(--t) linear var(--d) infinite}
+ @keyframes sfmSway{from{transform:rotate(calc(var(--r,0deg) - 5deg)) scaleX(var(--f,1))}to{transform:rotate(calc(var(--r,0deg) + 5deg)) scaleX(var(--f,1))}}
+ @keyframes sfmFall{0%{transform:translate3d(0,-20px,0) rotate(0);opacity:0}12%{opacity:.4}88%{opacity:.4}100%{transform:translate3d(var(--x),var(--H,700px),0) rotate(220deg);opacity:0}}
+ @media (max-width:480px){body[data-page="memories"] .sfm-cn{width:32px;top:-11px;right:-2px}body[data-page="memories"] .mem:nth-child(even) .sfm-cn{left:-2px}
+@@ -390,8 +390,8 @@
+ body[data-page="final"] .sff-clip{position:absolute;inset:0;overflow:hidden;border-radius:inherit}   /* glow + petals stay inside the rounded card; sunflowers may hang off its edge */
+ body[data-page="final"] .sff-glow{position:absolute;left:50%;top:calc(var(--pd) + 40px);width:210px;height:210px;margin:-105px 0 0 -105px;border-radius:50%;   /* centred on the ✨ (5rem tall) */
+   background:radial-gradient(closest-side,rgba(255,205,100,.34),rgba(244,197,66,.1) 58%,transparent);animation:sffGlow 7s ease-in-out infinite alternate}
+-body[data-page="final"] .sffp{position:absolute;top:0;display:block;width:var(--s);height:calc(var(--s)*1.5);border-radius:55% 45% 60% 40%/70% 70% 30% 30%;
+-  background:linear-gradient(160deg,var(--sf-yellow),var(--sf-gold));opacity:0;animation:sffFall var(--t) linear var(--d) infinite}
++body[data-page="final"] .sffp{position:absolute;top:0;display:block;width:var(--s);height:calc(var(--s)*1.6);border-radius:100% 0;
++  background:linear-gradient(160deg,var(--sf-soft),var(--sf-gold));opacity:0;animation:sffFall var(--t) linear var(--d) infinite}
+ body[data-page="final"] .sffp.l{left:calc(var(--pd)*.5 - var(--s)*.5)}      /* centred in the left / right padding strip: text and photo never sit there */
+ body[data-page="final"] .sffp.r{right:calc(var(--pd)*.5 - var(--s)*.5)}
+ body[data-page="final"] .sff-a{position:absolute;top:-16px;right:-12px;width:clamp(50px,8vw,68px);height:auto;overflow:visible;rotate:7deg;transform-origin:50% 100%;opacity:.95;animation:sfSwayP 9s ease-in-out infinite}
+--- a/js/script.js	2026-10-03 05:58:52.886680701 +0000
++++ b/js/script.js	2026-10-03 05:58:52.932448063 +0000
+@@ -401,7 +401,7 @@
+         <p class="sub">${f.sub}</p><p class="msg">${f.message}</p>${photo(f.photo, "A final photo", "tilt")}
+         <p class="hand foot">${f.footer}</p>${SFX.finalDeco()}</section>`;
+       SFX.finalFit(app.querySelector(".card"));
+-      setTimeout(() => burst(26), 3000);                // stars appear after a few seconds
++      setTimeout(() => burst(T.sunflower ? 8 : 26), 3000);                // stars appear after a few seconds
+     }
+   };
+ 
+@@ -418,7 +418,7 @@
+       let p = "";
+       for (let k = 0; k < 14; k++) p += ell(k * 360 / 14, 9, 8, "--sf-p2,#E8AA22");
+       for (let k = 0; k < 14; k++) p += ell(k * 360 / 14 + 360 / 28, 10.5, 6.5, "--sf-p1,#F4C542");
+-      sky.insertAdjacentHTML("afterbegin", `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="sf-flower" viewBox="0 0 40 40">${p}<circle cx="20" cy="20" r="6" style="fill:var(--sf-c,#52643A)"/><circle cx="20" cy="20" r="3.2" style="fill:var(--sf-c2,#788A4A);opacity:.55"/></symbol></svg>`);
++      sky.insertAdjacentHTML("afterbegin", `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="sf-flower" viewBox="0 0 40 40">${p}<circle cx="20" cy="20" r="6" style="fill:var(--sf-c,#7a5128)"/><circle cx="20" cy="20" r="3.2" style="fill:var(--sf-c2,#c28a45);opacity:.55"/></symbol></svg>`);
+     }
+     const r = (a, b) => a + Math.random() * (b - a);
+     for (let k = 0; k < n; k++) {
+@@ -477,5 +477,5 @@
+ 
+   if (sessionStorage.getItem("arrive")) { document.body.classList.add("arrive"); sessionStorage.removeItem("arrive"); }
+   views[PAGES[i]]();
+-  burst(i === 5 ? 8 : 16);
++  burst(PAGES[i] === "final" ? 8 : 16);
+ })();
+\ No newline at end of file
+--- a/js/cake.js	2026-10-03 05:58:52.888145234 +0000
++++ b/js/cake.js	2026-10-03 05:58:52.932538153 +0000
+@@ -186,7 +186,7 @@
+       let p = "";
+       for (let k = 0; k < 14; k++) p += ell(k * 360 / 14, 9, 8, "--sf-p2,#E8AA22");
+       for (let k = 0; k < 14; k++) p += ell(k * 360 / 14 + 360 / 28, 10.5, 6.5, "--sf-p1,#F4C542");
+-      sky.insertAdjacentHTML("afterbegin", `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="sf-flower" viewBox="0 0 40 40">${p}<circle cx="20" cy="20" r="6" style="fill:var(--sf-c,#52643A)"/><circle cx="20" cy="20" r="3.2" style="fill:var(--sf-c2,#788A4A);opacity:.55"/></symbol></svg>`);
++      sky.insertAdjacentHTML("afterbegin", `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="sf-flower" viewBox="0 0 40 40">${p}<circle cx="20" cy="20" r="6" style="fill:var(--sf-c,#7a5128)"/><circle cx="20" cy="20" r="3.2" style="fill:var(--sf-c2,#c28a45);opacity:.55"/></symbol></svg>`);
+     }
+     const r = (a, b) => a + Math.random() * (b - a);
+     for (let k = 0; k < n; k++) {
+--- a/cake.html	2026-10-03 05:58:52.889512045 +0000
++++ b/cake.html	2026-10-03 05:58:52.932654498 +0000
+@@ -276,7 +276,7 @@
+       let p = "";
+       for (let k = 0; k < 14; k++) p += ell(k * 360 / 14, 9, 8, "--sf-p2,#E8AA22");
+       for (let k = 0; k < 14; k++) p += ell(k * 360 / 14 + 360 / 28, 10.5, 6.5, "--sf-p1,#F4C542");
+-      sky.insertAdjacentHTML("afterbegin", `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="sf-flower" viewBox="0 0 40 40">${p}<circle cx="20" cy="20" r="6" style="fill:var(--sf-c,#52643A)"/><circle cx="20" cy="20" r="3.2" style="fill:var(--sf-c2,#788A4A);opacity:.55"/></symbol></svg>`);
++      sky.insertAdjacentHTML("afterbegin", `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="sf-flower" viewBox="0 0 40 40">${p}<circle cx="20" cy="20" r="6" style="fill:var(--sf-c,#7a5128)"/><circle cx="20" cy="20" r="3.2" style="fill:var(--sf-c2,#c28a45);opacity:.55"/></symbol></svg>`);
+     }
+     const r = (a, b) => a + Math.random() * (b - a);
+     for (let k = 0; k < n; k++) {

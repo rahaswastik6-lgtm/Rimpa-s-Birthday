@@ -1,0 +1,50 @@
+--- a/css/style.css	2026-10-04 09:03:31.231963570 +0000
++++ b/css/style.css	2026-10-04 09:03:31.323963566 +0000
+@@ -490,3 +490,29 @@
+ body.sfbox .cst.dim .tier.t::after{right:10%;top:-3.4em;--px:-1.3em;--py:8.6em;--pr:170deg;--d:1.1s;--t:4s}
+ @keyframes sfAfterPet{0%{opacity:0;transform:none}14%{opacity:.85}50%{transform:translate(calc(var(--px)*-.55),calc(var(--py)*.5)) rotate(calc(var(--pr)*.5))}85%{opacity:.6}100%{opacity:0;transform:translate(var(--px),var(--py)) rotate(var(--pr))}}
+ @media (prefers-reduced-motion:reduce){body.sfbox .cds::before{transition:none}body.sfbox .cd:nth-child(4n+2)::after,body.sfbox .cst.dim .cake::before,body.sfbox .cst.dim .cake::after,body.sfbox .cst.dim .tier.t::before,body.sfbox .cst.dim .tier.t::after{display:none}}
++
++/* =====================================================================
++   SUNFLOWER THEME — phase 9: cutting the cake + final celebration (cake.html). STYLING ONLY.
++   Knife, dotted guide, drag/tap/keyboard cut, cut detection, slice animation, layers, filling, buttons, messages and timings are untouched.
++   Only colours of what already exists + a few quiet petals. body.sfbox = same theme switch as the box/cake (theme.sunflower:false → original look).
++   ===================================================================== */
++/* 1 · knife + cutting line: muted sage handle, warm-gold dotted guide and cut line */
++body.sfbox .knife path:first-child{fill:#5c6e3f}
++body.sfbox .zone::before{border-left-color:rgba(176,130,37,.7)}
++body.sfbox .cl{background:rgba(150,104,28,.82);box-shadow:0 0 .35em rgba(244,197,66,.55)}
++/* 2 · crumbs: tiny golden crumbs, every 6th one a miniature petal */
++body.sfbox .crumb{background:#e6b94e;box-shadow:0 0 .35em rgba(244,197,66,.5)}
++body.sfbox .crumb:nth-of-type(6n){width:.34em;height:.58em;border-radius:100% 0;background:linear-gradient(160deg,var(--sf-soft),var(--sf-gold))}
++/* 3 · the moment of the cut (.cake.cut): four petals/leaves drift down beside the slice, once, then are gone (the sprigs on the cake stay) */
++body.sfbox .cake.cut .plate::before,body.sfbox .cake.cut .plate::after,body.sfbox .cake.cut .tier.b::before,body.sfbox .cake.cut .cds::after{content:"";position:absolute;z-index:6;width:.55em;height:.95em;border-radius:100% 0;background:linear-gradient(160deg,#ebcb6a,#d49e26);opacity:0;pointer-events:none;animation:sfAfterPet var(--t,3.4s) cubic-bezier(.3,.55,.4,1) var(--d,0s) forwards}
++body.sfbox .cake.cut .tier.b::before{left:14.6em;top:-9.8em;--px:2.4em;--py:11em;--pr:200deg;--d:.1s}
++body.sfbox .cake.cut .cds::after{left:96%;top:-5.4em;--px:1.6em;--py:10.5em;--pr:-170deg;--d:.5s;--t:3.8s}
++body.sfbox .cake.cut .plate::before{left:82%;top:-13.6em;--px:1.8em;--py:12em;--pr:-190deg;--d:.9s;--t:3.7s}
++body.sfbox .cake.cut .plate::after{left:70%;top:-13.2em;--px:-1.2em;--py:11.5em;--pr:170deg;--d:.7s;--t:4s;background:linear-gradient(160deg,var(--sf-green),var(--sf-green-d))}
++/* 4 · final celebration: the pink/lavender confetti becomes soft petals, gold dust and a few muted-green leaves (classes set in celebrate()) */
++body.sfbox .cf{width:9px;height:15px;border-radius:100% 0;--o:.75;animation-name:sfCfFall}
++body.sfbox .cf.sfp{background:linear-gradient(160deg,var(--sf-soft),var(--sf-gold))}
++body.sfbox .cf.sfd{width:5px;height:5px;border-radius:50%;background:var(--sf-soft);box-shadow:0 0 7px 2px rgba(244,197,66,.45);--o:.9}
++body.sfbox .cf.sfl{width:8px;height:13px;background:linear-gradient(160deg,var(--sf-green),var(--sf-green-d));--o:.55}
++@keyframes sfCfFall{0%{opacity:0;transform:translate(0,0) rotate(0)}10%{opacity:var(--o,.75)}30%{transform:translate(calc(var(--dx)*.3 + 12px),33vh) rotate(70deg)}60%{transform:translate(calc(var(--dx)*.6 - 12px),66vh) rotate(150deg)}88%{opacity:var(--o,.75)}100%{opacity:0;transform:translate(var(--dx),110vh) rotate(230deg)}}
++@media (prefers-reduced-motion:reduce){body.sfbox .cake.cut .plate::before,body.sfbox .cake.cut .plate::after,body.sfbox .cake.cut .tier.b::before,body.sfbox .cake.cut .cds::after{display:none}}
+--- a/cake.html	2026-10-04 09:03:31.315963566 +0000
++++ b/cake.html	2026-10-04 09:03:31.362080625 +0000
+@@ -253,10 +253,11 @@
+ 
+       /* ----- 5. final celebration (soft, not a huge explosion) ----- */
+       const celebrate = async () => {
+-        say("", f(K.finalTitle), f(K.finalMessage)); burst(24);
+-        if (!reduced) { const col = ["#e8b8c0", "#d9cfeb", "#fbe3d3", "#ffd98a", "#7a2e3f"];
+-          for (let k = 0; k < 38; k++) setTimeout(() => { const c = document.createElement("i"); c.className = "cf"; c.style.cssText =
+-            `left:${rnd(0, 100)}%;background:${col[k % 5]};--dx:${rnd(-60, 60)}px;animation-duration:${rnd(5, 9)}s`; document.body.appendChild(c); setTimeout(() => c.remove(), 9500); }, k * 160); }
++        const sf = document.body.classList.contains("sfbox");   // sunflower theme: soft petals, gold dust, a few leaves — fewer pieces over the same ~6 s
++        say("", f(K.finalTitle), f(K.finalMessage)); burst(sf ? 12 : 24);
++        if (!reduced) { const col = ["#e8b8c0", "#d9cfeb", "#fbe3d3", "#ffd98a", "#7a2e3f"], kind = ["sfp", "sfd", "sfp", "sfl", "sfd", "sfp"];
++          for (let k = 0; k < (sf ? 22 : 38); k++) setTimeout(() => { const c = document.createElement("i"); c.className = sf ? "cf " + kind[k % 6] : "cf"; c.style.cssText =
++            `left:${rnd(0, 100)}%;${sf ? "" : `background:${col[k % 5]};`}--dx:${rnd(-60, 60)}px;animation-duration:${rnd(5, 9)}s`; document.body.appendChild(c); setTimeout(() => c.remove(), 9500); }, k * (sf ? 275 : 160)); }
+         await wait(2800); $("m3").innerHTML += `<br><span class="hand">${f(K.finalFunny)}</span>`;
+       };
+     }
