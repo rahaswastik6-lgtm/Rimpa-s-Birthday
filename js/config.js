@@ -12,8 +12,10 @@ const CONFIG = {
   nextPage: "welcome.html",      // page opened after the letter unlocks
 
   // ★ BIRTHDAY COUNTDOWN — change this ONE value to move the unlock moment.
-  // Keep the +05:30 offset: it pins the moment to IST no matter where her phone is.
-  birthdayDate: new Date(Date.now()+5000).toISOString(),
+
+// Keep the +05:30 offset: it pins the moment to IST no matter where her phone is.
+
+birthdayDate: new Date("2026-10-14T00:00:00+05:30").toISOString(),
 
   countdown: {
     curtainTitle: "Rimpa's Birthday ✨",
